@@ -22,8 +22,12 @@ def check(username):
             return jsonify({"error": "Kullanıcı bulunamadı"}), 404
 
         soup = BeautifulSoup(res.text, "html.parser")
-        description = soup.find("meta", property="og:description")["content"]
+        meta = soup.find("meta", property="og:description")
 
+        if not meta:
+            return jsonify({"error": "Profil açıklaması bulunamadı"}), 500
+
+        description = meta["content"]
         return jsonify({
             "username": username,
             "info": description
