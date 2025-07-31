@@ -24,3 +24,9 @@ def check_instagram():
         return jsonify(response.json())
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route("/check/instagram")
+def check_instagram():
+    username = request.args.get("username")
+    print("İstek geldi: ", username)  # 🐞 Log satırı
+
