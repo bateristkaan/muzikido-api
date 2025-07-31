@@ -16,7 +16,7 @@ def check_instagram():
 
     headers = {
         "X-RapidAPI-Key": RAPIDAPI_KEY,
-        "X-RapidAPI-Host": RAPIDAPI_HOST,
+        "X-RapidAPI-Host": RAPIDAPI_HOST
     }
 
     querystring = {"username": username}
