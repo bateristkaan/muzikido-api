@@ -1,40 +1,10 @@
-from flask import Flask, request, jsonify
-import instaloader
- 
+from flask import Flask
+
 app = Flask(__name__)
- 
+
 @app.route("/")
 def home():
-    return "Instagram Analyzer API is running."
- 
-@app.route("/analyze")
-def analyze():
-    username = request.args.get("username")
-    if not username:
-        return jsonify({"error": "Kullanıcı adı girilmedi"})
- 
-    L = instaloader.Instaloader()
-    try:
-        profile = instaloader.Profile.from_username(L.context, username)
-    except:
-        return jsonify({"error": "Hesap bulunamadı veya gizli"})
- 
-    posts = profile.get_posts()
-    total_likes = total_comments = count = 0
- 
-    for post in posts:
-        if count >= 10:
-            break
-        total_likes += post.likes
-        total_comments += post.comments
-        count += 1
- 
-    return jsonify({
-        "username": username,
-        "followers": profile.followers,
-        "total_likes": total_likes,
-        "total_comments": total_comments
-    })
- 
+    return "Merhaba, Railway çalışıyor!"
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run()
