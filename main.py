@@ -1,5 +1,7 @@
+from flask import Flask, jsonify
+import requests
+from bs4 import BeautifulSoup
 import os
-from flask import Flask
 
 app = Flask(__name__)
 
@@ -7,6 +9,29 @@ app = Flask(__name__)
 def home():
     return "Merhaba, muzikido-api çalışıyor!"
 
+@app.route("/check/<username>")
+def check(username):
+    try:
+        url = f"https://www.instagram.com/{username}/"
+        headers = {
+            "User-Agent": "Mozilla/5.0"
+        }
+        res = requests.get(url, headers=headers)
+
+        if res.status_code != 200:
+            return jsonify({"error": "Kullanıcı bulunamadı"}), 404
+
+        soup = BeautifulSoup(res.text, "html.parser")
+        description = soup.find("meta", property="og:description")["content"]
+
+        return jsonify({
+            "username": username,
+            "info": description
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port)
