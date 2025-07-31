@@ -18,6 +18,7 @@ def check(username):
     "Accept-Language": "en-US,en;q=0.9"
 }
 
+
         res = requests.get(url, headers=headers)
 
         if res.status_code != 200:
@@ -41,3 +42,6 @@ def check(username):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port)
+
+print("💡 Instagram HTML başı:\n", res.text[:1000])
+
