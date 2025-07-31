@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-RAPIDAPI_KEY = "5077c3f5f4msh81956eb53a533aep1af1c7jsn4719cb429064"  # kendi key'in
+RAPIDAPI_KEY = "5077c3f5f4msh81956eb53a533aep1af1c7jsn4719cb429064"
 RAPIDAPI_HOST = "instagram120.p.rapidapi.com"
 
 @app.route("/check/instagram")
@@ -24,4 +24,3 @@ def check_instagram():
         return jsonify(response.json())
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
