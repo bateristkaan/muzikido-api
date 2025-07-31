@@ -1,29 +1,32 @@
-from flask import Flask, request, jsonify
 import requests
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-@app.route("/check/instagram", methods=["GET"])
+RAPIDAPI_KEY = "5077c3f5f4msh81956eb53a533aep1af1c7jsn4719cb429064"  # kendi key'inle değiştir
+RAPIDAPI_HOST = "instagram120.p.rapidapi.com"
+
+@app.route("/check/instagram")
 def check_instagram():
     username = request.args.get("username")
     if not username:
         return jsonify({"error": "Kullanıcı adı gerekli"}), 400
 
-    url = "https://instagram120.p.rapidapi.com/api/instagram/profile"
-    headers = {
-        "X-RapidAPI-Key": "5077c3f5f4msh81956eb53a533aep1af1c7jsn4719cb429064",
-        "X-RapidAPI-Host": "instagram120.p.rapidapi.com"
-    }
-    params = {"username": username}
+    url = f"https://{RAPIDAPI_HOST}/api/instagram/profile"
 
-    response = requests.get(url, headers=headers, params=params)
+    headers = {
+        "X-RapidAPI-Key": RAPIDAPI_KEY,
+        "X-RapidAPI-Host": RAPIDAPI_HOST,
+    }
+
+    querystring = {"username": username}
 
     try:
-        return response.json()
-    except Exception:
-        return {"error": "Yanıt işlenemedi"}
+        response = requests.get(url, headers=headers, params=querystring)
+        data = response.json()
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    import os
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=5000)
